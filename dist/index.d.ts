@@ -9,12 +9,12 @@ type Dict<T = any> = Record<string, T>;
 interface Modal {
     id: string;
     _sid: Readonly<number>;
-    params: Dict<string>;
+    params?: Dict<string>;
     onClose?: () => void;
 }
 interface ModalProps {
-    onClose: () => void;
-    params: Dict<string>;
+    onClose?: () => void;
+    params?: Dict<string>;
 }
 
 declare const registerModal: (id: string, Modal: ComponentType<ModalProps>) => void;
@@ -24,7 +24,7 @@ declare const closeModal: () => void;
 declare const init: () => void;
 
 declare const useModal: (modalId: Modal['id']) => {
-    open: (params: ModalProps) => void;
+    open: (props?: ModalProps) => void;
     closeActive: () => void;
     isActive: () => boolean;
     isOpened: () => boolean;
