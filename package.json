@@ -1,6 +1,6 @@
 {
   "name": "yermak-modals",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "Modals router library",
   "main": "./dist/index.js",
   "module": "./dist/index.js",
