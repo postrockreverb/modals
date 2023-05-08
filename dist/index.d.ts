@@ -8,6 +8,7 @@ declare const ModalsProvider: ({ children }: ModalsContextProviderProps) => JSX.
 type Dict<T = any> = Record<string, T>;
 interface Modal {
     id: string;
+    _sid: Readonly<number>;
     params: Dict<string>;
     onClose?: () => void;
 }
@@ -22,4 +23,11 @@ declare const openModal: (modal: Modal) => void;
 declare const closeModal: () => void;
 declare const init: () => void;
 
-export { ModalProps, ModalsProvider, closeModal, init, openModal, registerModal };
+declare const useModal: (modalId: Modal['id']) => {
+    open: (params: ModalProps) => void;
+    closeActive: () => void;
+    isActive: () => boolean;
+    isOpened: () => boolean;
+};
+
+export { ModalProps, ModalsProvider, closeModal, init, openModal, registerModal, useModal };
