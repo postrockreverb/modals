@@ -1,27 +1,30 @@
 import { Modal, ModalProps } from './types';
 import { closeModal, generateSid, openModal } from './router';
-import { useRef } from 'react';
+import { useCallback, useRef } from 'react';
 import { isActiveModal, isModalOpened } from './stack';
 
 export const useModal = (modalId: Modal['id']) => {
   const sidRef = useRef<number>(generateSid());
 
-  const open = ({ params, onClose }: ModalProps) => {
-    const modal: Modal = { id: modalId, _sid: sidRef.current, params, onClose };
-    openModal(modal);
-  };
+  const open = useCallback(
+    (props?: ModalProps) => {
+      const modal: Modal = { id: modalId, params: props?.params, onClose: props?.onClose, _sid: sidRef.current };
+      openModal(modal);
+    },
+    [modalId],
+  );
 
-  const closeActive = () => {
+  const closeActive = useCallback(() => {
     closeModal();
-  };
+  }, []);
 
-  const isActive = () => {
+  const isActive = useCallback(() => {
     return isActiveModal(sidRef.current);
-  };
+  }, []);
 
-  const isOpened = () => {
+  const isOpened = useCallback(() => {
     return isModalOpened(sidRef.current);
-  };
+  }, []);
 
   return {
     open,
