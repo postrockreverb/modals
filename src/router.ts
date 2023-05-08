@@ -41,7 +41,7 @@ export const init = () => {
   collectEvent();
 };
 
-function getModalFromUrl() {
+function getModalFromUrl(): Modal | null {
   const urlSearchParams = new URLSearchParams(window.location.search);
   const params = Object.fromEntries(urlSearchParams.entries());
 
@@ -50,5 +50,13 @@ function getModalFromUrl() {
     return null;
   }
 
-  return { id: `${id}`, params: modalParams };
+  return {
+    id: `${id}`,
+    params: modalParams,
+    _sid: generateSid(),
+  };
+}
+
+export function generateSid(): number {
+  return Math.floor(Math.random() * 1_000_000);
 }
