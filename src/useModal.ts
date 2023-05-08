@@ -6,8 +6,8 @@ import { isActiveModal, isModalOpened } from './stack';
 export const useModal = (modalId: Modal['id']) => {
   const sidRef = useRef<number>(generateSid());
 
-  const open = (params: ModalProps) => {
-    const modal: Modal = { id: modalId, _sid: sidRef.current, ...params };
+  const open = ({ params, onClose }: ModalProps) => {
+    const modal: Modal = { id: modalId, _sid: sidRef.current, params, onClose };
     openModal(modal);
   };
 
