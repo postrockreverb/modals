@@ -1,10 +1,19 @@
+import { useCallback, useEffect, useReducer, useRef } from 'react';
 import { Modal, ModalProps } from './types';
 import { closeModal, generateSid, openModal } from './router';
-import { useCallback, useRef } from 'react';
 import { isActiveModal, isModalOpened } from './stack';
 
 export const useModal = (modalId: Modal['id']) => {
+  const [, update] = useReducer((x) => x + 1, 0);
+
   const sidRef = useRef<number>(generateSid());
+
+  useEffect(() => {
+    window.addEventListener('activemodalupdate', update);
+    return () => {
+      window.removeEventListener('activemodalupdate', update);
+    };
+  }, []);
 
   const open = useCallback(
     (props?: ModalProps) => {
@@ -18,13 +27,8 @@ export const useModal = (modalId: Modal['id']) => {
     closeModal();
   }, []);
 
-  const isActive = useCallback(() => {
-    return isActiveModal(sidRef.current);
-  }, []);
-
-  const isOpened = useCallback(() => {
-    return isModalOpened(sidRef.current);
-  }, []);
+  const isActive = isActiveModal(sidRef.current);
+  const isOpened = isModalOpened(sidRef.current);
 
   return {
     open,
