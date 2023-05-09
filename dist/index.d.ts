@@ -26,8 +26,8 @@ declare const init: () => void;
 declare const useModal: (modalId: Modal['id']) => {
     open: (props?: ModalProps) => void;
     closeActive: () => void;
-    isActive: () => boolean;
-    isOpened: () => boolean;
+    isActive: boolean;
+    isOpened: boolean;
 };
 
 export { ModalProps, ModalsProvider, closeModal, init, openModal, registerModal, useModal };
