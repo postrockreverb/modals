@@ -20,7 +20,7 @@ interface ModalProps {
 declare const registerModal: (id: string, Modal: ComponentType<ModalProps>) => void;
 
 declare const openModal: (modal: Modal) => void;
-declare const closeModal: () => void;
+declare const closeModal: (modalSid: Modal['_sid']) => void;
 declare const init: () => void;
 
 declare const useModal: (modalId: Modal['id']) => {
