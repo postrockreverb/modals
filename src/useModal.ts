@@ -24,7 +24,7 @@ export const useModal = (modalId: Modal['id']) => {
   );
 
   const closeActive = useCallback(() => {
-    closeModal();
+    closeModal(sidRef.current);
   }, []);
 
   const isActive = isActiveModal(sidRef.current);
