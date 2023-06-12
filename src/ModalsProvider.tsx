@@ -1,8 +1,8 @@
 import { createContext, ReactNode, useEffect, useReducer, useRef } from 'react';
-import { init, onHistoryPopState } from './router';
+import { closeModal, init, onHistoryPopState } from './router';
 import { getRegisteredModal } from './registry';
 import { getActiveStack } from './stack';
-import { activeModalUpdateEventName } from './event';
+import { ACTIVE_MODAL_UPDATE_EVENT_NAME } from './event';
 
 const ModalsContext = createContext(undefined);
 
@@ -16,10 +16,10 @@ export const ModalsProvider = ({ children }: ModalsContextProviderProps) => {
   const stack = getActiveStack();
 
   useEffect(() => {
-    window.addEventListener(activeModalUpdateEventName, update);
+    window.addEventListener(ACTIVE_MODAL_UPDATE_EVENT_NAME, update);
     window.addEventListener('popstate', onHistoryPopState);
     return () => {
-      window.removeEventListener(activeModalUpdateEventName, update);
+      window.removeEventListener(ACTIVE_MODAL_UPDATE_EVENT_NAME, update);
       window.removeEventListener('popstate', onHistoryPopState);
     };
   }, []);
@@ -36,7 +36,13 @@ export const ModalsProvider = ({ children }: ModalsContextProviderProps) => {
     if (!Component) {
       return null;
     }
-    return <Component key={i} onClose={modal.onClose} params={modal.params} />;
+
+    const onCurrentModalClose = () => {
+      closeModal(modal._sid);
+      modal.onClose?.();
+    };
+
+    return <Component key={i} onClose={onCurrentModalClose} params={modal.params} />;
   });
 
   return (
