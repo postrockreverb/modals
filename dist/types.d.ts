@@ -6,6 +6,10 @@ export interface Modal {
     onClose?: () => void;
 }
 export interface ModalProps {
+    close: () => void;
+    params?: Dict<string>;
+}
+export interface OpenModalProps {
     onClose?: () => void;
     params?: Dict<string>;
 }
