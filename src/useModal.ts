@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useReducer, useRef } from 'react';
-import { Modal, ModalProps } from './types';
+import { Modal, OpenModalProps } from './types';
 import { closeModal, generateSid, openModal } from './router';
 import { isActiveModal, isModalOpened } from './stack';
 
@@ -16,7 +16,7 @@ export const useModal = (modalId: Modal['id']) => {
   }, []);
 
   const open = useCallback(
-    (props?: ModalProps) => {
+    (props?: OpenModalProps) => {
       const modal: Modal = { id: modalId, params: props?.params, onClose: props?.onClose, _sid: sidRef.current };
       openModal(modal);
     },

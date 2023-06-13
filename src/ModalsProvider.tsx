@@ -37,12 +37,12 @@ export const ModalsProvider = ({ children }: ModalsContextProviderProps) => {
       return null;
     }
 
-    const onCurrentModalClose = () => {
+    const closeCurrent = () => {
       closeModal(modal._sid);
       modal.onClose?.();
     };
 
-    return <Component key={i} onClose={onCurrentModalClose} params={modal.params} />;
+    return <Component key={i} close={closeCurrent} params={modal.params} />;
   });
 
   return (
