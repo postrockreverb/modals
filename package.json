@@ -1,6 +1,6 @@
 {
   "name": "yermak-modals",
-  "version": "0.0.6",
+  "version": "0.0.7",
   "description": "Modals router library",
   "main": "./dist/index.js",
   "module": "./dist/index.js",
@@ -17,6 +17,7 @@
   ],
   "scripts": {
     "build": "rollup -c",
+    "watch": "rollup -c -w",
     "_build:ga": "yarn build && mkdir build && mv dist build/dist && mv package.json build/package.json",
     "lint": "eslint \"{**/*,*}.{ts,tsx}\"",
     "husky-init": "npx husky install && npx husky add .husky/pre-commit \"npx --no-install lint-staged\""

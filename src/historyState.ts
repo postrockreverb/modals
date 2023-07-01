@@ -10,19 +10,19 @@ export const pushHistoryState = (currentStateModal: Modal | null, newStateModal:
 
 export const replaceHistoryState = (currentStateModal: Modal | null, newStateModal: Modal | null) => {
   if (currentStateModal || newStateModal) {
-    const { data, url } = buildState(currentStateModal, newStateModal);
-    window.history.replaceState({ ...window.history.state, data }, '', url);
+    const { data, url } = buildState(currentStateModal, newStateModal, true);
+    window.history.replaceState({ ...window.history.state, ...data }, '', url);
   }
 };
 
-function buildState(currentStateModal: Modal | null, newStateModal: Modal | null) {
+function buildState(currentStateModal: Modal | null, newStateModal: Modal | null, skipAdd = false) {
   let searchParams = new URLSearchParams(window.location.search);
 
   if (currentStateModal) {
     searchParams = removeModalFromSearchParams(searchParams, currentStateModal);
   }
 
-  if (newStateModal) {
+  if (newStateModal && !skipAdd) {
     searchParams = addModalToSearchParams(searchParams, newStateModal);
   }
 

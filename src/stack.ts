@@ -4,6 +4,8 @@ const activeStack: Modal[] = [];
 
 export const getActiveStack = () => activeStack;
 
+export const getActiveModal = () => activeStack.at(-1) ?? null;
+
 export const getPreviousModal = () => activeStack.at(-2) ?? null;
 
 export const isActiveModal = (modalSid: Modal['_sid']) => getActiveStack().at(-1)?._sid === modalSid;

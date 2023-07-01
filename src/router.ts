@@ -1,6 +1,6 @@
 import { Modal } from './types';
 import { collectEvent } from './event';
-import { getActiveStack, getPreviousModal, isActiveModal, popModal, pushModal } from './stack';
+import { getActiveModal, getActiveStack, getPreviousModal, isActiveModal, popModal, pushModal } from './stack';
 import { pushHistoryState, replaceHistoryState } from './historyState';
 
 export const openModal = (modal: Modal) => {
@@ -12,7 +12,12 @@ export const openModal = (modal: Modal) => {
 export const closeModal = (modalSid: Modal['_sid']) => {
   const isActive = isActiveModal(modalSid);
   if (isActive) {
-    window.history.back();
+    const active = getActiveModal();
+    const previous = getPreviousModal();
+
+    popModal();
+    pushHistoryState(active, previous);
+    collectEvent();
   }
 };
 
