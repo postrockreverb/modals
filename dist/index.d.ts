@@ -1,9 +1,7 @@
-import { ReactNode, ComponentType } from 'react';
+/// <reference types="react" />
+import { ComponentType } from 'react';
 
-interface ModalsContextProviderProps {
-    children: ReactNode;
-}
-declare const ModalsProvider: ({ children }: ModalsContextProviderProps) => JSX.Element;
+declare const ModalsProvider: () => JSX.Element;
 
 type Dict<T = any> = Record<string, T>;
 interface Modal {
@@ -13,6 +11,7 @@ interface Modal {
     onClose?: () => void;
 }
 interface ModalProps {
+    opened: boolean;
     close: () => void;
     params?: Dict<string>;
 }
