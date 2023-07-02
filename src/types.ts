@@ -8,6 +8,7 @@ export interface Modal {
 }
 
 export interface ModalProps {
+  opened: boolean;
   close: () => void;
   params?: Dict<string>;
 }

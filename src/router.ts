@@ -2,6 +2,7 @@ import { Modal } from './types';
 import { collectEvent } from './event';
 import { getActiveModal, getActiveStack, getPreviousModal, isActiveModal, popModal, pushModal } from './stack';
 import { pushHistoryState, replaceHistoryState } from './historyState';
+import { mountModal } from './registry';
 
 export const openModal = (modal: Modal) => {
   pushModal(modal);
@@ -45,6 +46,7 @@ export const init = () => {
   }
 
   pushModal(modal);
+  mountModal(modal.id, modal._sid);
   replaceHistoryState(null, modal);
   collectEvent();
 };

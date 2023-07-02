@@ -1,16 +1,12 @@
-import { createContext, ReactNode, useEffect, useReducer, useRef } from 'react';
+import { createContext, useEffect, useReducer, useRef } from 'react';
 import { closeModal, init, onHistoryPopState } from './router';
-import { getRegisteredModal } from './registry';
+import { getMountedModals, getRegisteredModal } from './registry';
 import { getActiveStack } from './stack';
 import { ACTIVE_MODAL_UPDATE_EVENT_NAME } from './event';
 
 const ModalsContext = createContext(undefined);
 
-interface ModalsContextProviderProps {
-  children: ReactNode;
-}
-
-export const ModalsProvider = ({ children }: ModalsContextProviderProps) => {
+export const ModalsProvider = () => {
   const isMounted = useRef(false);
   const [, update] = useReducer((x) => x + 1, 0);
   const stack = getActiveStack();
@@ -31,24 +27,21 @@ export const ModalsProvider = ({ children }: ModalsContextProviderProps) => {
     }
   }, []);
 
-  const modals = stack.map((modal, i) => {
-    const Component = getRegisteredModal(modal.id);
+  const modals = getMountedModals().map((mounted) => {
+    const Component = getRegisteredModal(mounted.id);
     if (!Component) {
       return null;
     }
 
+    const modal = stack.find((modal) => modal._sid === mounted._sid);
+
     const closeCurrent = () => {
-      closeModal(modal._sid);
-      modal.onClose?.();
+      closeModal(mounted._sid);
+      modal?.onClose?.();
     };
 
-    return <Component key={i} close={closeCurrent} params={modal.params} />;
+    return <Component key={mounted._sid} close={closeCurrent} opened={!!modal} params={modal?.params} />;
   });
 
-  return (
-    <ModalsContext.Provider value={undefined}>
-      {children}
-      {modals}
-    </ModalsContext.Provider>
-  );
+  return <ModalsContext.Provider value={undefined}>{modals}</ModalsContext.Provider>;
 };
