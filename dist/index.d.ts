@@ -20,13 +20,13 @@ interface OpenModalProps {
     params?: Dict<string>;
 }
 
-declare const registerModal: (id: string, Modal: ComponentType<ModalProps>) => void;
-
 declare const useModal: (modalId: Modal['id']) => {
     open: (props?: OpenModalProps) => void;
     closeActive: () => void;
     isActive: boolean;
     isOpened: boolean;
 };
+
+declare const registerModal: (id: string, Modal: ComponentType<ModalProps>) => void;
 
 export { ModalProps, ModalsProvider, registerModal, useModal };
