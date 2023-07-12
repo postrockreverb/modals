@@ -4,8 +4,6 @@ import { getActiveModal, getActiveStack, getPreviousModal, isActiveModal, popMod
 import { pushHistoryState, replaceHistoryState } from './historyState';
 import { mountModal } from './registry';
 
-let initModalSid: number | null = null;
-
 export const openModal = (modal: Modal) => {
   pushModal(modal);
   pushHistoryState(getPreviousModal(), modal);
@@ -15,18 +13,12 @@ export const openModal = (modal: Modal) => {
 export const closeModal = (modalSid: Modal['_sid']) => {
   const isActive = isActiveModal(modalSid);
   if (isActive) {
-    const hasPrevious = modalSid !== initModalSid;
-    if (!hasPrevious) {
-      // go forward
-      const active = getActiveModal();
-      const previous = getPreviousModal();
+    const active = getActiveModal();
+    const previous = getPreviousModal();
 
-      popModal();
-      pushHistoryState(active, previous);
-      collectEvent();
-      return;
-    }
-    window.history.back();
+    popModal();
+    pushHistoryState(active, previous);
+    collectEvent();
   }
 };
 
@@ -55,7 +47,6 @@ export const init = () => {
 
   pushModal(modal);
   mountModal(modal.id, modal._sid);
-  initModalSid = modal._sid;
   replaceHistoryState(null, modal);
   collectEvent();
 };
