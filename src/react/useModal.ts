@@ -1,9 +1,9 @@
 import { useCallback, useEffect, useReducer, useRef } from 'react';
-import { Modal, OpenModalProps } from './types';
-import { closeModal, generateSid, openModal } from './router';
-import { isActiveModal, isModalOpened } from './stack';
-import { ACTIVE_MODAL_UPDATE_EVENT_NAME } from './event';
-import { mountModal, unmountModal } from './registry';
+import { Modal, OpenModalProps } from '../types';
+import { closeModal, generateSid, openModal } from '../router';
+import { isActiveModal, isModalOpened } from '../stack';
+import { ACTIVE_MODAL_UPDATE_EVENT_NAME } from '../event';
+import { mountModal, unmountModal } from '../registry';
 
 export const useModal = (modalId: Modal['id']) => {
   const [, update] = useReducer((x) => x + 1, 0);

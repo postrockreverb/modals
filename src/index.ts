@@ -1,4 +1,3 @@
-export { ModalsProvider } from './ModalsProvider';
+export { useModal, ModalsProvider } from './react';
 export { registerModal } from './registry';
-export { useModal } from './useModal';
 export type { ModalProps } from './types';
