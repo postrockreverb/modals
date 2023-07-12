@@ -3,6 +3,7 @@ import { closeModal, init, onHistoryPopState } from './router';
 import { getMountedModals, getRegisteredModal } from './registry';
 import { getActiveStack } from './stack';
 import { ACTIVE_MODAL_UPDATE_EVENT_NAME } from './event';
+import { ModalWrap } from './ModalWrap';
 
 const ModalsContext = createContext(undefined);
 
@@ -40,7 +41,11 @@ export const ModalsProvider = () => {
       modal?.onClose?.();
     };
 
-    return <Component key={mounted._sid} close={closeCurrent} opened={!!modal} params={modal?.params} />;
+    return (
+      <ModalWrap key={mounted._sid} opened={!!modal}>
+        {(opened) => <Component close={closeCurrent} opened={opened} params={modal?.params} />}
+      </ModalWrap>
+    );
   });
 
   return <ModalsContext.Provider value={undefined}>{modals}</ModalsContext.Provider>;
