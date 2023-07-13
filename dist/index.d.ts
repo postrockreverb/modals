@@ -4,29 +4,25 @@ import { ComponentType } from 'react';
 declare const ModalsProvider: () => JSX.Element;
 
 type Dict<T = any> = Record<string, T>;
-interface Modal {
-    id: string;
-    _sid: Readonly<number>;
-    params?: Dict<string>;
-    onClose?: () => void;
-}
-interface ModalProps {
-    opened: boolean;
+interface ModalProps<ModalParams extends Dict<string> | undefined> {
+    isOpened: boolean;
     close: () => void;
-    params?: Dict<string>;
+    params: Partial<ModalParams>;
 }
-interface OpenModalProps {
-    onClose?: () => void;
-    params?: Dict<string>;
+interface RegisteredModal<ModalParams extends Dict<string> | undefined> {
+    open: (params: ModalParams) => void;
+    close: () => void;
+    getIsActive: () => boolean;
+    getIsOpened: () => boolean;
 }
 
-declare const useModal: (modalId: Modal['id']) => {
-    open: (props?: OpenModalProps) => void;
-    closeActive: () => void;
+declare const useModal: <ModalParams extends Dict<string> | undefined>(registeredModal: RegisteredModal<ModalParams>) => {
+    open: (params: ModalParams) => void;
+    close: () => void;
     isActive: boolean;
     isOpened: boolean;
 };
 
-declare const registerModal: (id: string, Modal: ComponentType<ModalProps>) => void;
+declare const registerModal: <ModalParams extends Dict<string> | undefined>(id: string, Modal: ComponentType<ModalProps<ModalParams>>) => RegisteredModal<ModalParams>;
 
 export { ModalProps, ModalsProvider, registerModal, useModal };

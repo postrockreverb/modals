@@ -1,7 +1,7 @@
 import { ReactNode } from 'react';
 interface ModalWrapProps {
-    children: (opened: boolean) => ReactNode;
-    opened: boolean;
+    children: (isOpened: boolean) => ReactNode;
+    isOpened: boolean;
 }
-export declare const ModalWrap: ({ children, opened: _opened }: ModalWrapProps) => JSX.Element;
+export declare const ModalWrap: ({ children, isOpened: _isOpened }: ModalWrapProps) => JSX.Element;
 export {};
