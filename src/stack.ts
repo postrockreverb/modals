@@ -10,7 +10,7 @@ export const getActiveModal = () => activeStack.at(-1) ?? null;
 
 export const getPreviousModal = () => activeStack.at(-2) ?? null;
 
-export const isActiveModal = (modalId: Modal['id']) => {
+export const isModalActive = (modalId: Modal['id']) => {
   return getActiveModal()?.id === modalId;
 };
 

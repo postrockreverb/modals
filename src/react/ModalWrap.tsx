@@ -1,19 +1,19 @@
 import { ReactNode, useEffect, useState } from 'react';
 
 interface ModalWrapProps {
-  children: (opened: boolean) => ReactNode;
-  opened: boolean;
+  children: (isOpened: boolean) => ReactNode;
+  isOpened: boolean;
 }
 
-export const ModalWrap = ({ children, opened: _opened }: ModalWrapProps) => {
-  const [opened, setOpened] = useState(false);
+export const ModalWrap = ({ children, isOpened: _isOpened }: ModalWrapProps) => {
+  const [isOpened, setIsOpened] = useState(false);
 
   useEffect(() => {
-    setTimeout(() => setOpened(_opened));
+    setTimeout(() => setIsOpened(_isOpened));
     return () => {
-      setOpened(false);
+      setIsOpened(false);
     };
-  }, [_opened]);
+  }, [_isOpened]);
 
-  return <>{children(opened)}</>;
+  return <>{children(isOpened)}</>;
 };

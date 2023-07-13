@@ -2,11 +2,18 @@ export type Dict<T = any> = Record<string, T>;
 
 export interface Modal {
   id: string;
-  params?: Dict<string>;
+  params: Partial<Dict<string>>;
 }
 
-export interface ModalProps {
-  opened: boolean;
+export interface ModalProps<ModalParams extends Dict<string> | undefined> {
+  isOpened: boolean;
   close: () => void;
-  params?: Dict<string>;
+  params: Partial<ModalParams>;
+}
+
+export interface RegisteredModal<ModalParams extends Dict<string> | undefined> {
+  open: (params: ModalParams) => void;
+  close: () => void;
+  getIsActive: () => boolean;
+  getIsOpened: () => boolean;
 }

@@ -1,5 +1,5 @@
 import { Modal } from './types';
-import { getActiveModal, getActiveStack, getHistoryStack, getPreviousModal, isActiveModal, popModal, pushModal } from './stack';
+import { getActiveModal, getActiveStack, getHistoryStack, getPreviousModal, isModalActive, popModal, pushModal } from './stack';
 import { getModalFromUrl, pushHistory, replaceHistory } from './helpers';
 
 export const ROUTER_EVENT_NAME = 'modalrouterevent';
@@ -15,7 +15,7 @@ export const openModal = (modal: Modal) => {
 };
 
 export const closeModal = (modalId: Modal['id']) => {
-  const isActive = isActiveModal(modalId);
+  const isActive = isModalActive(modalId);
   if (isActive) {
     const active = getActiveModal();
     const previous = getPreviousModal();
