@@ -1,14 +1,14 @@
-import { Modal } from './types';
-import { getActiveStack } from './stack';
+import { Modal } from '../types';
+import { getActiveStack } from '../stack';
 
-export const pushHistoryState = (currentStateModal: Modal | null, newStateModal: Modal | null) => {
+export const pushHistory = (currentStateModal: Modal | null, newStateModal: Modal | null) => {
   if (currentStateModal || newStateModal) {
     const { data, url } = buildState(currentStateModal, newStateModal);
     window.history.pushState(data, '', url);
   }
 };
 
-export const replaceHistoryState = (currentStateModal: Modal | null, newStateModal: Modal | null) => {
+export const replaceHistory = (currentStateModal: Modal | null, newStateModal: Modal | null) => {
   if (currentStateModal || newStateModal) {
     const { data, url } = buildState(currentStateModal, newStateModal, true);
     window.history.replaceState({ ...window.history.state, ...data }, '', url);

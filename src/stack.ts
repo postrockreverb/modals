@@ -4,19 +4,21 @@ const activeStack: Modal[] = [];
 
 export const getActiveStack = () => activeStack;
 
+export const getHistoryStack = () => window.history.state.modals ?? [];
+
 export const getActiveModal = () => activeStack.at(-1) ?? null;
 
 export const getPreviousModal = () => activeStack.at(-2) ?? null;
 
-export const isActiveModal = (modalSid: Modal['_sid']) => getActiveStack().at(-1)?._sid === modalSid;
+export const isActiveModal = (modalId: Modal['id']) => {
+  return getActiveModal()?.id === modalId;
+};
 
-export const isModalOpened = (modalSid: Modal['_sid']) => !!activeStack.find((modal) => modal._sid === modalSid);
+export const isModalOpened = (modalId: Modal['id']) => {
+  return !!activeStack.find((modal) => modal.id === modalId);
+};
 
 export const pushModal = (modal: Modal) => {
-  const isOpened = isModalOpened(modal._sid);
-  if (isOpened) {
-    return;
-  }
   activeStack.push(modal);
 };
 

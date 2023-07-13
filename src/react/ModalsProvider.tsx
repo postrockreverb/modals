@@ -1,52 +1,40 @@
-import { createContext, useEffect, useReducer, useRef } from 'react';
-import { closeModal, init, onHistoryPopState } from '../router';
-import { getMountedModals, getRegisteredModal } from '../registry';
-import { getActiveStack } from '../stack';
-import { ACTIVE_MODAL_UPDATE_EVENT_NAME } from '../event';
+import { useEffect, useReducer, useRef } from 'react';
 import { ModalWrap } from './ModalWrap';
-
-const ModalsContext = createContext(undefined);
+import { getActiveStack, isActiveModal } from '../stack';
+import { getRegisteredModal, getRegistryModalsIds } from '../registry';
+import { closeModal, init, onHistory, ROUTER_EVENT_NAME } from '../router';
 
 export const ModalsProvider = () => {
   const isMounted = useRef(false);
   const [, update] = useReducer((x) => x + 1, 0);
-  const stack = getActiveStack();
 
   useEffect(() => {
-    window.addEventListener(ACTIVE_MODAL_UPDATE_EVENT_NAME, update);
-    window.addEventListener('popstate', onHistoryPopState);
+    window.addEventListener(ROUTER_EVENT_NAME, update);
+    window.addEventListener('popstate', onHistory);
+    if (!isMounted.current) {
+      isMounted.current = true;
+      init();
+    }
     return () => {
-      window.removeEventListener(ACTIVE_MODAL_UPDATE_EVENT_NAME, update);
-      window.removeEventListener('popstate', onHistoryPopState);
+      window.removeEventListener('popstate', onHistory);
     };
   }, []);
 
-  useEffect(() => {
-    if (!isMounted.current) {
-      init();
-      isMounted.current = true;
-    }
-  }, []);
-
-  const modals = getMountedModals().map((mounted) => {
-    const Component = getRegisteredModal(mounted.id);
+  const modalsIds = getRegistryModalsIds();
+  const stack = getActiveStack();
+  const modals = modalsIds.map((modalId) => {
+    const Component = getRegisteredModal(modalId);
     if (!Component) {
       return null;
     }
-
-    const modal = stack.find((modal) => modal._sid === mounted._sid);
-
-    const closeCurrent = () => {
-      closeModal(mounted._sid);
-      modal?.onClose?.();
-    };
-
+    const isActive = isActiveModal(modalId);
+    const params = stack.find((modal) => modal.id === modalId)?.params;
     return (
-      <ModalWrap key={mounted._sid} opened={!!modal}>
-        {(opened) => <Component close={closeCurrent} opened={opened} params={modal?.params} />}
+      <ModalWrap key={modalId} opened={isActive}>
+        {(opened) => <Component close={() => closeModal(modalId)} opened={opened} params={params} />}
       </ModalWrap>
     );
   });
 
-  return <ModalsContext.Provider value={undefined}>{modals}</ModalsContext.Provider>;
+  return <>{modals}</>;
 };
