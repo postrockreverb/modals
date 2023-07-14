@@ -1,8 +1,10 @@
 import { useEffect, useReducer, useRef } from 'react';
-import { ModalWrap } from './ModalWrap';
-import { getActiveStack, isModalActive } from '../stack';
-import { getRegisteredModal, getRegistryModalsIds } from '../registry';
-import { closeModal, init, onHistory, ROUTER_EVENT_NAME } from '../router';
+import { getRegistryModalsIds } from '../registry';
+import { init, onHistory, ROUTER_EVENT_NAME } from '../router';
+import { ModalContainer } from './ModalContainer';
+import { isModalActive } from '../stack';
+
+// попробовать рендерить маунтед стэк столько причем хранить его в юз стейте в теории норм будет
 
 export const ModalsProvider = () => {
   const isMounted = useRef(false);
@@ -22,24 +24,10 @@ export const ModalsProvider = () => {
     };
   }, []);
 
-  const modalsIds = getRegistryModalsIds();
-  const stack = getActiveStack();
-  const modals = modalsIds.map((modalId) => {
-    const Component = getRegisteredModal(modalId);
-    if (!Component) {
-      return null;
-    }
-    const modal = stack.find((modal) => modal.id === modalId);
-    if (!modal) {
-      return null;
-    }
-    const isActive = isModalActive(modal.id);
-    return (
-      <ModalWrap key={modal.id} isOpened={isActive}>
-        {(isOpened) => <Component close={() => closeModal(modal.id)} isOpened={isOpened} params={modal.params} />}
-      </ModalWrap>
-    );
+  const modals = getRegistryModalsIds().map((modalId) => {
+    const isActive = isModalActive(modalId);
+    return <ModalContainer key={modalId} modalId={modalId} isActive={isActive} />;
   });
 
-  return <>{modals}</>;
+  return <div>{modals}</div>;
 };
