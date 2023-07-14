@@ -4,7 +4,7 @@ import { ComponentType } from 'react';
 declare const ModalsProvider: () => JSX.Element;
 
 type Dict<T = any> = Record<string, T>;
-interface ModalProps<ModalParams extends Dict<string> | undefined> {
+interface ModalProps<ModalParams extends Dict<string> | undefined = undefined> {
     isOpened: boolean;
     close: () => void;
     params: Partial<ModalParams>;

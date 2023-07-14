@@ -3,7 +3,7 @@ export interface Modal {
     id: string;
     params: Partial<Dict<string>>;
 }
-export interface ModalProps<ModalParams extends Dict<string> | undefined> {
+export interface ModalProps<ModalParams extends Dict<string> | undefined = undefined> {
     isOpened: boolean;
     close: () => void;
     params: Partial<ModalParams>;
