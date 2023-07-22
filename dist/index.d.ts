@@ -10,14 +10,14 @@ interface ModalProps<ModalParams extends Dict<string> | undefined = undefined> {
     params: Partial<ModalParams>;
 }
 interface RegisteredModal<ModalParams extends Dict<string> | undefined> {
-    open: (params: ModalParams) => void;
+    open: (params?: ModalParams) => void;
     close: () => void;
     getIsActive: () => boolean;
     getIsOpened: () => boolean;
 }
 
 declare const useModal: <ModalParams extends Dict<string> | undefined>(registeredModal: RegisteredModal<ModalParams>) => {
-    open: (params: ModalParams) => void;
+    open: (params?: ModalParams | undefined) => void;
     close: () => void;
     isActive: boolean;
     isOpened: boolean;
